@@ -8,8 +8,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Create random text file
+    - name: Create a new text file with a randomized name
       run: |
-        random_name=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
-        echo "Derogatory text" > "${random_name}.txt"
+        filename=$(echo $RANDOM | md5sum | cut -c 1-10).txt
+        echo "Derogatory text" > $filename
+        echo "Created file: $filename"
+
+    - name: Upload the file as an artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: randomized-file
+        path: "*.txt"
     - uses: EndBug/add-and-commit@v9
