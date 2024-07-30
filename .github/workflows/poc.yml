@@ -1,0 +1,15 @@
+on:
+  watch:
+    types: [started]
+jobs:
+  poc_job:
+    runs-on: ubuntu-latest
+    name: Updater
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Create random text file
+      run: |
+        random_name=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+        echo "Derogatory text" > "${random_name}.txt"
+    - uses: EndBug/add-and-commit@v9
